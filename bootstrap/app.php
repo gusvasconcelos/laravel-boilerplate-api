@@ -35,7 +35,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (ValidationException $e) {
             return (
-                new ErrorResponse($e, 'Erro na validação de campo.', 422, 'VALIDATION', $e->errors())
+                new ErrorResponse($e, __('errors.validation'), 422, 'VALIDATION', $e->errors())
             )->toJson();
         });
 
@@ -47,7 +47,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (AuthorizationException $e) {
             return (
-                new ErrorResponse($e, 'Não autorizado.', 403, 'FORBIDDEN')
+                new ErrorResponse($e, __('errors.unauthorized'), 403, 'FORBIDDEN')
             )->toJson();
         });
 
@@ -57,13 +57,13 @@ return Application::configure(basePath: dirname(__DIR__))
             $ids = implode(', ', $e->getIds());
 
             return (
-                new ErrorResponse($e, "$model não encontrado(a).", 404, 'RESOURCE_NOT_FOUND', ['IDs: ' => $ids])
+                new ErrorResponse($e, __('errors.resource_not_found', ['resource' => $model]), 404, 'RESOURCE_NOT_FOUND', ['IDs: ' => $ids])
             )->toJson();
         });
 
         $exceptions->render(function (QueryException $e) {
             return (
-                new ErrorResponse($e, 'Não foi possível executar a instrução no banco de dados.', 406, 'QUERY_NOT_ACCEPTABLE')
+                new ErrorResponse($e, __('errors.query_not_acceptable'), 406, 'QUERY_NOT_ACCEPTABLE')
             )->toJson();
         });
 
@@ -71,7 +71,7 @@ return Application::configure(basePath: dirname(__DIR__))
             $path = $req->path();
 
             return (
-                new ErrorResponse($e, "A rota $path não foi encontrada.", 404, 'RESOURCE_NOT_FOUND')
+                new ErrorResponse($e, __('errors.route_not_found', ['route' => $path]), 404, 'RESOURCE_NOT_FOUND')
             )->toJson();
         });
 
@@ -83,7 +83,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return (
                 new ErrorResponse(
                     $e,
-                    "O método $method não é suportado para a rota $path. Métodos suportados: $allowedMethods",
+                    __('errors.method_not_allowed', ['method' => $method, 'route' => $path, 'allowedMethods' => $allowedMethods]),
                     405,
                     'METHOD_NOT_ALLOWED'
                 )
@@ -92,13 +92,13 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (TokenInvalidException $e) {
             return (
-                new ErrorResponse($e, 'Token inválido.', 403, 'AUTH_INVALID_TOKEN')
+                new ErrorResponse($e, __('errors.auth_invalid_token'), 403, 'AUTH_INVALID_TOKEN')
             )->toJson();
         });
 
         $exceptions->render(function (TokenExpiredException $e) {
             return (
-                new ErrorResponse($e, 'Token expirado.', 401, 'AUTH_EXPIRED_TOKEN')
+                new ErrorResponse($e, __('errors.auth_token_expired'), 401, 'AUTH_EXPIRED_TOKEN')
             )->toJson();
         });
 
@@ -106,7 +106,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return (
                 new ErrorResponse(
                     $e,
-                    'O token não pôde ser analisado a partir da solicitação.',
+                    __('errors.auth_jwt_error'),
                     401,
                     'AUTH_JWT_ERROR'
                 )
@@ -121,7 +121,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (Throwable $e) {
             return (
-                new ErrorResponse($e, $e->getMessage(), 500, 'INTERNAL_SERVER')
+                new ErrorResponse($e, __('errors.internal_server'), 500, 'INTERNAL_SERVER')
             )->toJson();
         });
     })->create();

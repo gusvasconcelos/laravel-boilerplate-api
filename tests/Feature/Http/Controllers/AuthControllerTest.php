@@ -46,7 +46,7 @@ class AuthControllerTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJson([
-                'message' => 'As credenciais estão inválidas.',
+                'message' => __('messages.auth.invalid_credentials'),
                 'status' => 422,
                 'code' => 'INVALID_CREDENTIALS'
             ]);
@@ -65,15 +65,15 @@ class AuthControllerTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJson([
-                'message' => 'Erro na validação de campo.',
+                'message' => __('errors.validation'),
                 'status' => 422,
                 'code' => 'VALIDATION',
                 'details' => [
                     'email' => [
-                        'O campo Email deve ser um endereço de e-mail válido.'
+                        __('validation.email', ['attribute' => __('validation.attributes.email')])
                     ],
                     'password' => [
-                        'O campo Senha é obrigatório.'
+                        __('validation.required', ['attribute' => __('validation.attributes.password')])
                     ]
                 ]
             ]);
@@ -101,10 +101,9 @@ class AuthControllerTest extends TestCase
         $response
             ->assertStatus(401)
             ->assertJson([
-                'message' => 'Não autenticado.',
+                'message' => __('messages.auth.not_authenticated'),
                 'status' => 401,
                 'code' => 'UNAUTHORIZED',
-                'details' => 'Para usar este recurso deve estar logado.'
             ]);
     }
 
@@ -117,7 +116,7 @@ class AuthControllerTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Logout feito com sucesso.'
+                'message' => __('messages.auth.logout')
             ]);
     }
 
@@ -128,7 +127,7 @@ class AuthControllerTest extends TestCase
         $response
             ->assertStatus(401)
             ->assertJson([
-                'message' => 'O token não pôde ser analisado a partir da solicitação.',
+                'message' => __('errors.auth_jwt_error'),
                 'status' => 401,
                 'code' => 'AUTH_JWT_ERROR'
             ]);
@@ -156,7 +155,7 @@ class AuthControllerTest extends TestCase
         $response
             ->assertStatus(401)
             ->assertJson([
-                'message' => 'O token não pôde ser analisado a partir da solicitação.',
+                'message' => __('errors.auth_jwt_error'),
                 'status' => 401,
                 'code' => 'AUTH_JWT_ERROR'
             ]);

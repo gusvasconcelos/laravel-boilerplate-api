@@ -14,7 +14,7 @@ class AuthService
         $token = auth('api')->attempt($request->toArray());
 
         if (! $token) {
-            throw new UnprocessableEntityException('As credenciais estão inválidas.', 'INVALID_CREDENTIALS');
+            throw new UnprocessableEntityException(__('messages.auth.invalid_credentials'), 'INVALID_CREDENTIALS');
         }
 
         return $token;
@@ -25,7 +25,7 @@ class AuthService
         $user = auth('api')->user();
 
         if (! $user) {
-            throw new UnauthorizedException('Não autenticado.');
+            throw new UnauthorizedException(__('messages.auth.not_authenticated'));
         }
 
         return $user;

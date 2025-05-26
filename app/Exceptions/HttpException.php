@@ -25,7 +25,7 @@ class HttpException extends Exception
         return $this->errorCode;
     }
 
-    public function getDetails(): string|array
+    public function getDetails(): string|array|null
     {
         return $this->details;
     }

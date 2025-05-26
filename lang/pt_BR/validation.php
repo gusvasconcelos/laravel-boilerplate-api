@@ -178,6 +178,7 @@ return [
         'date'      => 'data',
         'day'       => 'dia',
         'description' => 'descrição',
+        'email' => 'email',
         'excerpt'   => 'resumo',
         'first_name' => 'primeiro nome',
         'gender'    => 'gênero',
@@ -208,6 +209,7 @@ return [
         'username'  => 'usuário',
         'year'      => 'ano',
         'description' => 'descrição',
+        'password' => 'senha',
         'password_confirmation' => 'confirmação da senha',
         'current_password' => 'senha atual',
         'complement' => 'complemento',
@@ -216,5 +218,4 @@ return [
         'blood_type' => 'tipo sanguíneo',
         'birth_date' => 'data de nascimento'
     ],
-
 ];
