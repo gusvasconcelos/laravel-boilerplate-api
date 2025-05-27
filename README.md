@@ -15,7 +15,7 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [x] **Tratamento de erros global e exceções personalizadas**
   Tratamento de erros global e exceções personalizadas para melhorar a experiência do usuário.
 
-- [ ] **Code Style**
+- [x] **Code Style**
   Laravel Pint usando PSR-12 para formatação de código.
 
 - [ ] **Code Quality**
