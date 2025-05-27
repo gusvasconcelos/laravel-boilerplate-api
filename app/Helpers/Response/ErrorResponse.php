@@ -92,4 +92,3 @@ class ErrorResponse implements Arrayable
             })->toArray();
     }
 }
-
