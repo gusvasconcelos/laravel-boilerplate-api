@@ -12,6 +12,9 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [x] **Internalização**  
   Suporte a múltiplos idiomas, atualmente inglês e português do Brasil.
 
+- [x] **Tratamento de erros global e exceções personalizadas**
+  Tratamento de erros global e exceções personalizadas para melhorar a experiência do usuário.
+
 - [ ] **Code Style**
   Laravel Pint usando PSR-12 para formatação de código.
 
@@ -42,7 +45,7 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [ ] **File uploads**  
   Upload e gerenciamento de arquivos.
 
-- [ ] **E2E tests**  
+- [x] **E2E tests**  
   Testes de ponta a ponta para garantir a qualidade da API.
 
 ## Como usar
