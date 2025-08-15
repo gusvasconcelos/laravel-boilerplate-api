@@ -10,11 +10,17 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\External\PostHog\ErrorTracking\Entity\Property;
+use App\Services\External\PostHog\ErrorTracking\Entity\Exception;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Services\External\PostHog\ErrorTracking\Entity\StackTrace;
+use App\Services\External\PostHog\ErrorTracking\Entity\StackTraceFrame;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use App\Services\External\PostHog\ErrorTracking\Request\ErrorTrackingRequest;
+use App\Services\External\PostHog\ErrorTracking\ErrorTrackingClient;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -69,6 +75,32 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (NotFoundHttpException $e, Request $req) {
             $path = $req->path();
+
+            $errorTrackingRequest = new ErrorTrackingRequest(
+                new Property(
+                    distinctId: $req->user()?->id ?? 'unknown',
+                    exceptions: [
+                        new Exception(
+                            type: 'NotFoundHttpException',
+                            value: $e->getMessage(),
+                            stacktrace: new StackTrace(
+                                type: 'raw',
+                                stacktraceFrames: [
+                                    new StackTraceFrame(
+                                        filename: $e->getFile(),
+                                        line: $e->getLine(),
+                                        message: $e->getMessage(),
+                                        statusCode: 404,
+                                        errorCode: 'NOT_FOUND',
+                                    ),
+                                ],
+                            ),
+                        ),
+                    ],
+                ),
+            );
+
+            (new ErrorTrackingClient())->capture($errorTrackingRequest);
 
             return (
                 new ErrorResponse($e, __('errors.route_not_found', ['route' => $path]), 404, 'RESOURCE_NOT_FOUND')
