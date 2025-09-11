@@ -21,7 +21,7 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [x] **Code Quality**
   PHPStan para análise estática de código.
 
-- [ ] **RBAC (Role-Based Access Control)**  
+- [x] **RBAC (Role-Based Access Control)**  
   Controle de acesso baseado em papéis para maior granularidade de permissões.
 
 - [ ] **Logging**  
