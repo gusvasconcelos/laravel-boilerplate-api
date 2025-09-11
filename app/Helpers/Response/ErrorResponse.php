@@ -59,12 +59,9 @@ class ErrorResponse implements Arrayable
 
         $getTrace = $this->exception->getTrace();
 
-        $trace = collect($getTrace)
-            ->filter(function ($item) use ($appPath) {
-                return Arr::exists($item, 'file') && Str::startsWith($item['file'], $appPath);
-            })
-            ->values()
-            ->toArray();
+        $trace = array_filter($getTrace, function ($item) use ($appPath) {
+            return Arr::exists($item, 'file') && Str::startsWith($item['file'], $appPath);
+        });
 
         return [
             'file' => $this->exception->getFile(),
@@ -84,11 +81,10 @@ class ErrorResponse implements Arrayable
 
         $bindings = $this->exception->getBindings();
 
-        return collect($bindings)
-            ->map(function ($binding) use ($sql) {
-                $value = is_numeric($binding) ? $binding : "'$binding'";
+        return array_map(function ($binding) use ($sql) {
+            $value = is_numeric($binding) ? $binding : "'$binding'";
 
-                return preg_replace('/\?/', $value, $sql, 1);
-            })->toArray();
+            return preg_replace('/\?/', $value, $sql, 1);
+        }, $bindings);
     }
 }
