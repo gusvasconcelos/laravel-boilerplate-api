@@ -18,7 +18,7 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [x] **Code Style**
   Laravel Pint usando PSR-12 para formatação de código.
 
-- [ ] **Code Quality**
+- [x] **Code Quality**
   PHPStan para análise estática de código.
 
 - [ ] **RBAC (Role-Based Access Control)**  
