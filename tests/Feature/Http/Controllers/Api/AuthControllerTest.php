@@ -34,10 +34,8 @@ class AuthControllerTest extends TestCase
 
     public function test_login_with_invalid_credentials(): void
     {
-        $faker = \Faker\Factory::create(\config('app.locale'));
-
         $form = [
-            'email' => $faker->email(),
+            'email' => $this->faker()->email(),
             'password' => 'password',
         ];
 
@@ -54,10 +52,8 @@ class AuthControllerTest extends TestCase
 
     public function test_login_with_validation_errors(): void
     {
-        $faker = \Faker\Factory::create(\config('app.locale'));
-
         $form = [
-            'email' => $faker->word(),
+            'email' => $this->faker()->word(),
         ];
 
         $response = $this->postJson("$this->url/login", $form);
