@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use App\Exceptions\HttpException;
 use Illuminate\Foundation\Application;
-use App\Helpers\Response\ErrorResponse;
+use App\Helpers\ErrorResponse;
 use Illuminate\Database\QueryException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Validation\ValidationException;

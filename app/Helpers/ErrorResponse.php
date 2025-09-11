@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers\Response;
+namespace App\Helpers;
 
 use Throwable;
 use Illuminate\Support\Str;
