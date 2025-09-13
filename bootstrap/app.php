@@ -102,7 +102,7 @@ return Application::configure(basePath: dirname(__DIR__))
             );
 
             Log::critical(
-                message: 'Erro de query no sistema' . PHP_EOL . 'Request ID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
+                message: 'Erro de query no sistema' . PHP_EOL . 'RequestID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
                 context: $errorResponse->toArray()
             );
 
@@ -210,7 +210,7 @@ return Application::configure(basePath: dirname(__DIR__))
             );
 
             Log::critical(
-                message: 'Erro interno no sistema' . PHP_EOL . 'Request ID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
+                message: 'Erro interno no sistema' . PHP_EOL . 'RequestID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
                 context: $errorResponse->toArray()
             );
 
