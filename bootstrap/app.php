@@ -200,6 +200,8 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (Throwable $e) use ($reqId) {
+            $userId = auth('api')->user()?->id;
+
             $errorResponse = new ErrorResponse(
                 exception: $e,
                 message: __('errors.internal_server'),
@@ -209,7 +211,7 @@ return Application::configure(basePath: dirname(__DIR__))
             );
 
             Log::critical(
-                message: 'Erro interno no sistema',
+                message: 'Erro interno no sistema' . PHP_EOL . 'UserID: ' . $userId,
                 context: $errorResponse->toArray()
             );
 
