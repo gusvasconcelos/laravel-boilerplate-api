@@ -36,6 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $reqId = Str::uuid7()->toString();
+        $userId = auth('api')->user()->id ?? 'N/A';
 
         $exceptions->render(function (ValidationException $e) use ($reqId) {
             $errorResponse = new ErrorResponse(
@@ -91,7 +92,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return $errorResponse->toJsonResponse();
         });
 
-        $exceptions->render(function (QueryException $e) use ($reqId) {
+        $exceptions->render(function (QueryException $e) use ($reqId, $userId) {
             $errorResponse = new ErrorResponse(
                 exception: $e,
                 message: __('errors.query_not_acceptable'),
@@ -101,7 +102,7 @@ return Application::configure(basePath: dirname(__DIR__))
             );
 
             Log::critical(
-                message: 'Erro de query no sistema',
+                message: 'Erro de query no sistema' . PHP_EOL . 'Request ID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
                 context: $errorResponse->toArray()
             );
 
@@ -199,9 +200,7 @@ return Application::configure(basePath: dirname(__DIR__))
             return $errorResponse->toJsonResponse();
         });
 
-        $exceptions->render(function (Throwable $e) use ($reqId) {
-            $userId = auth('api')->user()?->id;
-
+        $exceptions->render(function (Throwable $e) use ($reqId, $userId) {
             $errorResponse = new ErrorResponse(
                 exception: $e,
                 message: __('errors.internal_server'),
@@ -211,7 +210,7 @@ return Application::configure(basePath: dirname(__DIR__))
             );
 
             Log::critical(
-                message: 'Erro interno no sistema' . PHP_EOL . 'UserID: ' . $userId,
+                message: 'Erro interno no sistema' . PHP_EOL . 'Request ID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
                 context: $errorResponse->toArray()
             );
 
