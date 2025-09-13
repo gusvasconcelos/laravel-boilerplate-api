@@ -35,7 +35,7 @@ class AuthController extends Controller
             throw new UnauthorizedException(__('messages.auth.not_authenticated'));
         }
 
-        return response()->json($data);
+        return response()->json($user);
     }
 
     public function logout(): JsonResponse
