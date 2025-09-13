@@ -24,7 +24,7 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [x] **RBAC (Role-Based Access Control)**  
   Controle de acesso baseado em papéis para maior granularidade de permissões.
 
-- [ ] **Logging**  
+- [x] **Logging**  
   Sistema de logs customizável para monitoramento e auditoria.
 
 - [ ] **Docker**  
