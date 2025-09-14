@@ -79,11 +79,9 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 
 A API conta com documentação automática gerada via Swagger/OpenAPI:
 
-- **Interface Swagger UI**: `http://localhost:8000/api/documentation`
-- **JSON OpenAPI**: `http://localhost:8000/api/documentation/json`
-- **Gerar documentação estática**: `php artisan api:docs`
-
-Para mais detalhes sobre como adicionar documentação a novos endpoints, consulte: [`docs/API_DOCUMENTATION.md`](docs/API_DOCUMENTATION.md)
+- **Interface Swagger UI**: `http://localhost:8000/docs`
+- **JSON OpenAPI**: `http://localhost:8000/api/v1/docs`
+- **Gerar documentação estática**: `composer generate:docs`
 
 ---
 
