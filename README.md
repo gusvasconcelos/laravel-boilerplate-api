@@ -24,7 +24,7 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [x] **RBAC (Role-Based Access Control)**  
   Controle de acesso baseado em papéis para maior granularidade de permissões.
 
-- [x] **Logging**  
+- [x] **Logging via Discord**  
   Sistema de logs customizável para monitoramento e auditoria.
 
 - [ ] **Docker**  
@@ -52,7 +52,7 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/gusvasconcelos/laravel-api.git
+   git clone https://github.com/gusvasconcelos/laravel-boilerplate-api.git
    ```
 2. Instale as dependências:
    ```bash
