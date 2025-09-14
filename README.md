@@ -30,8 +30,8 @@ Funcionalidades que ainda serão implementadas neste starter kit:
 - [ ] **Docker**  
   Ambiente de desenvolvimento e produção containerizado.
 
-- [ ] **Documentação automática (Swagger)**  
-  Geração automática de documentação da API com Swagger/OpenAPI.
+- [x] **Documentação (Swagger)**  
+  Geração de documentação da API com Swagger/OpenAPI.
 
 - [ ] **CI/CD com Github Actions**  
   Pipeline de integração e entrega contínua utilizando Github Actions.
@@ -66,10 +66,22 @@ Funcionalidades que ainda serão implementadas neste starter kit:
    ```bash
    php artisan migrate
    ```
-5. Inicie o servidor de desenvolvimento:
+5. Gere a chave JWT:
+   ```bash
+   php artisan jwt:secret
+   ```
+6. Inicie o servidor de desenvolvimento:
    ```bash
    php artisan serve
    ```
+
+## Documentação da API
+
+A API conta com documentação automática gerada via Swagger/OpenAPI:
+
+- **Interface Swagger UI**: `http://localhost:8000/docs`
+- **JSON OpenAPI**: `http://localhost:8000/api/v1/docs`
+- **Gerar documentação estática**: `composer generate:docs`
 
 ---
 
