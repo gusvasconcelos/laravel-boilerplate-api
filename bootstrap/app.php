@@ -36,7 +36,6 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $reqId = Str::uuid7()->toString();
-        $userId = auth('api')->user()->id ?? 'N/A';
 
         $exceptions->render(function (ValidationException $e) use ($reqId) {
             $errorResponse = new ErrorResponse(
@@ -92,7 +91,9 @@ return Application::configure(basePath: dirname(__DIR__))
             return $errorResponse->toJsonResponse();
         });
 
-        $exceptions->render(function (QueryException $e) use ($reqId, $userId) {
+        $exceptions->render(function (QueryException $e) use ($reqId) {
+            $userId = auth('api')->id() ?? 'N/A';
+
             $errorResponse = new ErrorResponse(
                 exception: $e,
                 message: __('errors.query_not_acceptable'),
@@ -200,7 +201,9 @@ return Application::configure(basePath: dirname(__DIR__))
             return $errorResponse->toJsonResponse();
         });
 
-        $exceptions->render(function (Throwable $e) use ($reqId, $userId) {
+        $exceptions->render(function (Throwable $e) use ($reqId) {
+            $userId = auth('api')->id() ?? 'N/A';
+
             $errorResponse = new ErrorResponse(
                 exception: $e,
                 message: __('errors.internal_server'),
