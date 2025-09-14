@@ -48,7 +48,7 @@ class AuthController extends Controller
         path: '/auth/me',
         summary: 'Get authenticated user data',
         description: 'Return the authenticated user data',
-        security: [['bearerAuth' => []]],
+        security: [['bearer-token' => []]],
         tags: ['Authentication'],
         responses: [
             new Response(
@@ -73,7 +73,7 @@ class AuthController extends Controller
         path: '/auth/logout',
         summary: 'Logout user',
         description: 'Invalidate the authenticated user JWT token',
-        security: [['bearerAuth' => []]],
+        security: [['bearer-token' => []]],
         tags: ['Authentication'],
         responses: [
             new Response(
@@ -96,7 +96,7 @@ class AuthController extends Controller
         path: '/auth/refresh',
         summary: 'Refresh token JWT',
         description: 'Refresh the authenticated user JWT token',
-        security: [['bearerAuth' => []]],
+        security: [['bearer-token' => []]],
         tags: ['Authentication'],
         responses: [
             new Response(

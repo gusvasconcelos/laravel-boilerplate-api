@@ -17,7 +17,7 @@ use OpenApi\Attributes\Tag;
     description: 'Laravel Boilerplate API V1 Server'
 )]
 #[SecurityScheme(
-    securityScheme: 'token',
+    securityScheme: 'bearer-token',
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
