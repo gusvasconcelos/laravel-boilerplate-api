@@ -10,6 +10,7 @@ use App\Exceptions\UnprocessableEntityException;
 use OpenApi\Attributes\Post;
 use OpenApi\Attributes\Get;
 use OpenApi\Attributes\Response;
+use OpenApi\Attributes\RequestBody;
 use OpenApi\Attributes\JsonContent;
 
 class AuthController extends Controller
@@ -19,6 +20,11 @@ class AuthController extends Controller
         summary: 'Login user',
         description: 'Authenticate a user and return a JWT token',
         tags: ['Authentication'],
+        requestBody: new RequestBody(
+            description: 'Login credentials',
+            required: true,
+            content: new JsonContent(ref: "#/components/schemas/login")
+        ),
         responses: [
             new Response(
                 response: 200,

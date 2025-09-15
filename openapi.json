@@ -20,6 +20,17 @@
                 "summary": "Login user",
                 "description": "Authenticate a user and return a JWT token",
                 "operationId": "99d66635c4992aeaa6aa44ff653d0563",
+                "requestBody": {
+                    "description": "Login credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/login"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Login successful",
@@ -56,7 +67,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearer-token": []
                     }
                 ]
             }
@@ -83,7 +94,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearer-token": []
                     }
                 ]
             }
@@ -110,7 +121,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "bearer-token": []
                     }
                 ]
             }
@@ -118,6 +129,28 @@
     },
     "components": {
         "schemas": {
+            "login": {
+                "description": "Login schema",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "User email",
+                        "type": "string",
+                        "format": "email",
+                        "example": "john.doe@example.com"
+                    },
+                    "password": {
+                        "description": "User password",
+                        "type": "string",
+                        "minLength": 8,
+                        "example": "password"
+                    }
+                },
+                "type": "object"
+            },
             "logout": {
                 "description": "Logout schema",
                 "required": [
@@ -209,7 +242,7 @@
             }
         },
         "securitySchemes": {
-            "token": {
+            "bearer-token": {
                 "type": "http",
                 "description": "Token JWT for authentication. Add the token without the \"Bearer\" prefix",
                 "bearerFormat": "JWT",
