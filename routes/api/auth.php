@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => 'auth',
-    'middleware' => ['api', 'jwt'],
+    'middleware' => ['jwt'],
 ], function () {
     Route::post('login', [AuthController::class, 'login'])->withoutMiddleware(['jwt']);
     Route::post('logout', [AuthController::class, 'logout']);
