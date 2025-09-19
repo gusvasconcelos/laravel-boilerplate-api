@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b881fc0212c3c30d373ade9f36109da",
+    "content-hash": "90c682c82269faa4f95c218b4841396e",
     "packages": [
         {
             "name": "brick/math",
@@ -642,6 +642,49 @@
                 }
             ],
             "time": "2024-07-20T21:45:45+00:00"
+        },
+        {
+            "name": "gusvasconcelos/markdown-converter",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gusvasconcelos/php-markdown-converter.git",
+                "reference": "28f54fcab6c7527b866a06e36488cf3b0f49c43d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gusvasconcelos/php-markdown-converter/zipball/28f54fcab6c7527b866a06e36488cf3b0f49c43d",
+                "reference": "28f54fcab6c7527b866a06e36488cf3b0f49c43d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GusVasconcelos\\MarkdownConverter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gustavo Vasconcelos",
+                    "email": "gusvasconcelos@proton.me"
+                }
+            ],
+            "description": "A PHP library for generating structured content in Markdown format with support for various elements and customization options",
+            "support": {
+                "issues": "https://github.com/gusvasconcelos/php-markdown-converter/issues",
+                "source": "https://github.com/gusvasconcelos/php-markdown-converter/tree/v1.0.0"
+            },
+            "time": "2025-09-18T15:00:31+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
