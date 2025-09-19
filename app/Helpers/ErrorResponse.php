@@ -3,11 +3,11 @@
 namespace App\Helpers;
 
 use Throwable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Database\QueryException;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Arr;
-use Illuminate\Http\JsonResponse;
 
 class ErrorResponse implements Arrayable
 {
@@ -27,18 +27,13 @@ class ErrorResponse implements Arrayable
         return response()->json($this->toArray(), $this->statusCode);
     }
 
-    public function toJsonPretty(): string
-    {
-        return json_encode($this->toArray(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-    }
-
     public function toArray(): array
     {
         $response = [
+            'req_id' => $this->reqId,
             'message' => $this->message,
             'status' => $this->statusCode,
             'code' => $this->errorCode,
-            'req_id' => $this->reqId,
         ];
 
         if ($this->details) {
