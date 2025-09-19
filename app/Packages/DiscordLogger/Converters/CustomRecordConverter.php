@@ -2,13 +2,24 @@
 
 namespace App\Packages\DiscordLogger\Converters;
 
-use Illuminate\Support\Arr;
-use MarvinLabs\DiscordLogger\Converters\AbstractRecordConverter;
-use MarvinLabs\DiscordLogger\Contracts\DiscordWebHook;
+use Illuminate\Contracts\Config\Repository;
 use MarvinLabs\DiscordLogger\Discord\Message;
+use MarvinLabs\DiscordLogger\Contracts\DiscordWebHook;
+use GusVasconcelos\MarkdownConverter\MarkdownConverter;
+use MarvinLabs\DiscordLogger\Converters\AbstractRecordConverter;
 
 class CustomRecordConverter extends AbstractRecordConverter
 {
+    private MarkdownConverter $markdownConverter;
+
+    public function __construct(
+        Repository $config,
+    ) {
+        parent::__construct($config);
+
+        $this->markdownConverter = new MarkdownConverter();
+    }
+
     /**
      * @throws \MarvinLabs\DiscordLogger\Discord\Exceptions\ConfigurationIssue
      */
@@ -16,55 +27,35 @@ class CustomRecordConverter extends AbstractRecordConverter
     {
         $message = Message::make();
 
-        $this->addGenericMessageFrom($message);
-        $this->addMainContent($message, $record);
-        $this->addContextBlock($message, $record);
-
-        return [$message];
-    }
-
-    protected function addMainContent(Message $message, array $record): void
-    {
-        $timestamp = $record['datetime']->format('d/m/Y - H:i:s');
-
         $emoji = $this->getRecordEmoji($record);
 
-        $levelName = $record['level_name'];
+        $timestamp = $record['datetime']->format('d/m/Y - H:i:s');
 
         $channel = $record['channel'];
 
-        $mainMessage = $record['message'];
+        $levelName = $record['level_name'];
 
-        $content = $emoji ? "$emoji " : "";
+        $content = $this->markdownConverter
+            ->heading("{$emoji} - **[{$timestamp}] {$channel}.{$levelName}**", 1)
+            ->paragraph($record['message'])
+            ->heading('📄 Response', 2)
+            ->codeBlock(json_pretty($record['context']), 'json');
 
-        $content .= "**[$timestamp] $channel.$levelName**\n";
+        if (strlen($content->getContent()) <= DiscordWebHook::MAX_CONTENT_LENGTH) {
+            $message->content($content->getContent());
 
-        $content .= "```\n$mainMessage\n```";
-
-        $message->content($content);
-    }
-
-    protected function addContextBlock(Message $message, array $record): void
-    {
-        $context = Arr::except($record['context'] ?? [], ['exception']);
-
-        if (empty($context)) {
-            return;
+            return [$message];
         }
 
-        $jsonContext = json_encode($context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        $contextContent = "\n**Response:**\n```json\n$jsonContext\n```";
+        $this->markdownConverter->stepBack(2);
 
-        $currentContent = $message->content ?? '';
+        $stackTraceMessage = Message::make()
+            ->file(json_pretty($record['context']), 'json', $this->getStacktraceFilename($record));
 
-        if (strlen($currentContent . $contextContent) > DiscordWebHook::MAX_CONTENT_LENGTH) {
-            // Se exceder o limite, criar uma mensagem separada
-            $contextMessage = Message::make();
-            $this->addGenericMessageFrom($contextMessage);
-            $contextMessage->content("**Response:**\n```json\n$jsonContext\n```");
-            return;
-        }
+        $this->addGenericMessageFrom($stackTraceMessage);
 
-        $message->content($currentContent . $contextContent);
+        $message->content($content->getContent());
+
+        return [$message, $stackTraceMessage];
     }
 }

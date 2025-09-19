@@ -1,23 +1,24 @@
 <?php
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Exceptions\HttpException;
-use Illuminate\Foundation\Application;
 use App\Helpers\ErrorResponse;
+use App\Exceptions\HttpException;
+use Illuminate\Support\Facades\Log;
+use App\Http\Middleware\JWTMiddleware;
+use Illuminate\Foundation\Application;
 use Illuminate\Database\QueryException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use Illuminate\Support\Str;
-use App\Http\Middleware\JWTMiddleware;
+use GusVasconcelos\MarkdownConverter\MarkdownConverter;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -97,16 +98,27 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (QueryException $e) use ($reqId) {
             $userId = auth('api')->id() ?? 'N/A';
 
+            $message = __('errors.query_not_acceptable');
+
             $errorResponse = new ErrorResponse(
                 exception: $e,
-                message: __('errors.query_not_acceptable'),
+                message: $message,
                 statusCode: 406,
                 errorCode: 'QUERY_NOT_ACCEPTABLE',
                 reqId: $reqId,
             );
 
+            $message = (new MarkdownConverter())
+                ->heading("**{$message}**", 1)
+                ->unorderedList([
+                    "RequestID: `{$reqId}`",
+                    "UserID: `{$userId}`",
+                    "ErrorCode: `QUERY_NOT_ACCEPTABLE`",
+                ])
+                ->getContent();
+
             Log::critical(
-                message: 'Erro de query no sistema' . PHP_EOL . 'RequestID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
+                message: $message,
                 context: $errorResponse->toArray()
             );
 
@@ -207,16 +219,27 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Throwable $e) use ($reqId) {
             $userId = auth('api')->id() ?? 'N/A';
 
+            $message = __('errors.internal_server');
+
             $errorResponse = new ErrorResponse(
                 exception: $e,
-                message: __('errors.internal_server'),
+                message: $message,
                 statusCode: 500,
-                errorCode: 'INTERNAL_SERVER',
+                errorCode: 'INTERNAL_SERVER_ERROR',
                 reqId: $reqId,
             );
 
+            $message = (new MarkdownConverter())
+                ->heading("**{$message}**", 1)
+                ->unorderedList([
+                    "RequestID: `{$reqId}`",
+                    "UserID: `{$userId}`",
+                    "ErrorCode: `INTERNAL_SERVER_ERROR`",
+                ])
+                ->getContent();
+
             Log::critical(
-                message: 'Erro interno no sistema' . PHP_EOL . 'RequestID: ' . $reqId . PHP_EOL . 'UserID: ' . $userId,
+                message: $message,
                 context: $errorResponse->toArray()
             );
 
