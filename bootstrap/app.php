@@ -110,12 +110,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
             $message = (new MarkdownConverter())
                 ->heading("**{$message}**", 1)
-                ->unorderedList([
-                    "RequestID: `{$reqId}`",
-                    "UserID: `{$userId}`",
-                    "ErrorCode: `QUERY_NOT_ACCEPTABLE`",
-                ])
-                ->getContent();
+                ->paragraph('Request ID:')
+                ->code($reqId)
+                ->paragraph('User ID:')
+                ->code($userId)
+                ->paragraph('Error Code:')
+                ->code('QUERY_NOT_ACCEPTABLE');
 
             Log::critical(
                 message: $message,
@@ -231,12 +231,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
             $message = (new MarkdownConverter())
                 ->heading("**{$message}**", 1)
-                ->unorderedList([
-                    "RequestID: `{$reqId}`",
-                    "UserID: `{$userId}`",
-                    "ErrorCode: `INTERNAL_SERVER_ERROR`",
-                ])
-                ->getContent();
+                ->paragraph('Request ID:')
+                ->code($reqId)
+                ->paragraph('User ID:')
+                ->code($userId)
+                ->paragraph('Error Code:')
+                ->code('INTERNAL_SERVER_ERROR');
 
             Log::critical(
                 message: $message,

@@ -2,7 +2,6 @@
 
 namespace App\Packages\DiscordLogger\Converters;
 
-use Illuminate\Contracts\Config\Repository;
 use MarvinLabs\DiscordLogger\Discord\Message;
 use MarvinLabs\DiscordLogger\Contracts\DiscordWebHook;
 use GusVasconcelos\MarkdownConverter\MarkdownConverter;
@@ -10,16 +9,6 @@ use MarvinLabs\DiscordLogger\Converters\AbstractRecordConverter;
 
 class CustomRecordConverter extends AbstractRecordConverter
 {
-    private MarkdownConverter $markdownConverter;
-
-    public function __construct(
-        Repository $config,
-    ) {
-        parent::__construct($config);
-
-        $this->markdownConverter = new MarkdownConverter();
-    }
-
     /**
      * @throws \MarvinLabs\DiscordLogger\Discord\Exceptions\ConfigurationIssue
      */
@@ -35,26 +24,27 @@ class CustomRecordConverter extends AbstractRecordConverter
 
         $levelName = $record['level_name'];
 
-        $content = $this->markdownConverter
+        $contextPretty = cast()->toJsonPretty($record['context']);
+
+        $content = (new MarkdownConverter())
             ->heading("{$emoji} - **[{$timestamp}] {$channel}.{$levelName}**", 1)
             ->paragraph($record['message'])
             ->heading('📄 Response', 2)
-            ->codeBlock(json_pretty($record['context']), 'json');
+            ->codeBlock($contextPretty, 'json');
 
-        if (strlen($content->getContent()) <= DiscordWebHook::MAX_CONTENT_LENGTH) {
-            $message->content($content->getContent());
+        if (strlen($content) <= DiscordWebHook::MAX_CONTENT_LENGTH) {
+            $message->content($content);
 
             return [$message];
         }
 
-        $this->markdownConverter->stepBack(2);
+        $content->removeAt($content->count() - 1);
 
-        $stackTraceMessage = Message::make()
-            ->file(json_pretty($record['context']), 'json', $this->getStacktraceFilename($record));
+        $stackTraceMessage = Message::make()->file($contextPretty, 'json', $this->getStacktraceFilename($record));
 
         $this->addGenericMessageFrom($stackTraceMessage);
 
-        $message->content($content->getContent());
+        $message->content($content);
 
         return [$message, $stackTraceMessage];
     }
